@@ -1,1 +1,1 @@
-from jinjath.jinjath import TemplateWithSource, JinjaTemplateAction
+from jinjath.jinjath import TemplateWithSource, JinjaTemplateAction, set_template_kwargs
