@@ -27,9 +27,9 @@ from jinja2 import exceptions as jinja_exc
 
 _template_kwargs = {}
 
-def set_template_kwargs(**kwargs):
+def set_template_kwargs(template_kwargs):
     global _template_kwargs
-    _template_kwargs = kwargs
+    _template_kwargs = template_kwargs
 
 class TemplateWithSourceSyntaxError(Exception):
     """
