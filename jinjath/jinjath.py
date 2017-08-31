@@ -36,10 +36,10 @@ class TemplateWithSourceSyntaxError(Exception):
     A Jinja TemplateSyntaxError which also reports the template source that triggered the error
     """
 
-class TemplateWithSource(Template):
+class TemplateWithSource(Template, **kwargs):
     def __new__(cls, source):
         try:
-            rv = super().__new__(cls, source, **_template_kwargs)
+            rv = super().__new__(cls, source, **_template_kwargs, **kwargs)
         except jinja_exc.TemplateSyntaxError as e:
             raise TemplateWithSourceSyntaxError("Syntax error in template. Template source was '%s'" % (source)) from e
         rv._source = source
@@ -55,7 +55,7 @@ class JinjaTemplateAction(Action):
         super().__init__(option_strings, dest, **kwargs)
     def __call__(self, parser, namespace, source, option_string=None):
         try:
-            template = TemplateWithSource(source, **_template_kwargs)
+            template = TemplateWithSource(source)
         except TemplateWithSourceSyntaxError as e:
             raise TemplateWithSourceSyntaxError("Syntax error in template specified by %s." % (option_string)) from e
         setattr(namespace, self.dest, template)
