@@ -36,8 +36,8 @@ class TemplateWithSourceSyntaxError(Exception):
     A Jinja TemplateSyntaxError which also reports the template source that triggered the error
     """
 
-class TemplateWithSource(Template, **kwargs):
-    def __new__(cls, source):
+class TemplateWithSource(Template):
+    def __new__(cls, source, **kwargs):
         try:
             rv = super().__new__(cls, source, **_template_kwargs, **kwargs)
         except jinja_exc.TemplateSyntaxError as e:
