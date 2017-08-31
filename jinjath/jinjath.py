@@ -50,6 +50,6 @@ class JinjaTemplateAction(Action):
     def __call__(self, parser, namespace, source, option_string=None):
         try:
             template = TemplateWithSource(source, **TEMPLATE_KWARGS)
-        except jinja_exc.TemplateSyntaxError as e:
-            raise TemplateWithSourceSyntaxError("Syntax error in template specified by %s. Template source was: '%s'" % (option_string, source)) from e
+        except TemplateWithSourceSyntaxError as e:
+            raise TemplateWithSourceSyntaxError("Syntax error in template specified by %s." % (option_string)) from e
         setattr(namespace, self.dest, template)
