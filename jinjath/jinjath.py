@@ -35,7 +35,7 @@ class TemplateWithSource(Template):
         try:
             rv = super().__new__(cls, source, **kwargs)
         except jinja_exc.TemplateSyntaxError as e:
-            raise TemplateWithSourceSyntaxError("Syntax error in template. Template source was '%s'" % (e, source)) from e
+            raise TemplateWithSourceSyntaxError("Syntax error in template. Template source was '%s'" % (source)) from e
         rv._source = source
         return rv
 
