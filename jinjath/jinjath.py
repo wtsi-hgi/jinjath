@@ -25,11 +25,11 @@ from argparse import Action
 from jinja2 import Template
 from jinja2 import exceptions as jinja_exc
 
-_template_kwargs = {}
+_template_options = {}
 
-def set_template_kwargs(template_kwargs):
-    global _template_kwargs
-    _template_kwargs = template_kwargs
+def set_template_options(template_options):
+    global _template_options
+    _template_options = template_options
 
 class TemplateWithSourceSyntaxError(Exception):
     """
@@ -39,7 +39,7 @@ class TemplateWithSourceSyntaxError(Exception):
 class TemplateWithSource(Template):
     def __new__(cls, source):
         try:
-            rv = super().__new__(cls, source, **_template_kwargs)
+            rv = super().__new__(cls, source, _template_options)
         except jinja_exc.TemplateSyntaxError as e:
             raise TemplateWithSourceSyntaxError("Syntax error in template. Template source was '%s'" % (source)) from e
         rv._source = source
@@ -55,7 +55,7 @@ class JinjaTemplateAction(Action):
         super().__init__(option_strings, dest, **kwargs)
     def __call__(self, parser, namespace, source, option_string=None):
         try:
-            template = TemplateWithSource(source, **_template_kwargs)
+            template = TemplateWithSource(source, _template_options)
         except TemplateWithSourceSyntaxError as e:
             raise TemplateWithSourceSyntaxError("Syntax error in template specified by %s." % (option_string)) from e
         setattr(namespace, self.dest, template)
